@@ -1,0 +1,102 @@
+import bpy
+import random
+
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete()
+
+# Randomly generate first cube position and size
+x = random.uniform(-10, 10)
+y = random.uniform(-10, 10)
+z = 0
+width = random.uniform(1, 20)
+depth = random.uniform(1, 20)
+height = random.uniform(1, 20)
+
+# Create first cube
+bpy.ops.mesh.primitive_cube_add(size=1, location=(x, y, z))
+cube1 = bpy.context.active_object
+cube1.scale = (width, depth, height)
+
+# Generate 19 more prisms
+for i in range(30):
+    # Randomly generate position and size of next prism
+    face = random.choice(["front", "back", "top", "bottom", "left", "right"])
+    if face == "front":
+        shape = random.choice(["block", "cone", "sphere"])
+        if shape == "block":
+            width = random.uniform(1, 20)
+            depth = random.uniform(1, 20)
+            height = random.uniform(1, 20)
+            x = x + width/2
+            y = random.uniform(y - depth/2, y + depth/2)
+            z = random.uniform(z - height/2, z + height/2)
+            bpy.ops.mesh.primitive_cube_add(size=1, location=(x, y, z))
+            cube1 = bpy.context.active_object
+            cube1.scale = (width, depth, height)
+        if shape == "cone":
+            conedepth = random.uniform(1, 20)
+            radius1 = random.uniform(1, 20)
+            radius2 = random.uniform(1, 20)
+            x = x + conedepth/2
+            y = random.uniform(y - radius1/2, y + radius1/2)
+            z = random.uniform(z - radius1/2, z + radius1/2)
+            bpy.ops.mesh.primitive_cone_add(radius1 = radius1, radius2 = radius2, depth = conedepth, location=(x, y, z))
+            cone1 = bpy.context.active_object
+            cone1.rotation_euler = (1.5708, 0 , 1.5708)
+        if shape == "sphere":
+            radius = random.uniform(1,20)
+            x = x + radius/2
+            y = random.uniform(y - radius/2, y + radius/2)
+            z = random.uniform(z - radius/2, z + radius/2)
+            bpy.ops.mesh.primitive_uv_sphere_add(radius = radius, location=(x, y, z))
+
+    elif face == "back":
+        width = random.uniform(1, 20)
+        depth = random.uniform(1, 20)
+        height = random.uniform(1, 20)
+        x = x - width/2
+        y = random.uniform(y - depth/2, y + depth/2)
+        z = random.uniform(z - height/2, z + height/2)
+        bpy.ops.mesh.primitive_cube_add(size=1, location=(x, y, z))
+        cube1 = bpy.context.active_object
+        cube1.scale = (width, depth, height)
+    elif face == "top":
+        depth = random.uniform(1, 20)
+        width = random.uniform(1, 20)
+        height = random.uniform(1, 20)
+        x = random.uniform(x - width/2, x + width/2)
+        y = y + depth/2
+        z = random.uniform(z - height/2, z + height/2)
+        bpy.ops.mesh.primitive_cube_add(size=1, location=(x, y, z))
+        cube1 = bpy.context.active_object
+        cube1.scale = (width, depth, height)
+    elif face == "bottom":
+        depth = random.uniform(1, 20)
+        width = random.uniform(1, 20)
+        height = random.uniform(1, 20)
+        x = random.uniform(x - width/2, x + width/2)
+        y = y - depth/2
+        z = random.uniform(z - height/2, z + height/2)
+        bpy.ops.mesh.primitive_cube_add(size=1, location=(x, y, z))
+        cube1 = bpy.context.active_object
+        cube1.scale = (width, depth, height)
+    elif face == "left":
+        height = random.uniform(1, 20)
+        width = random.uniform(1, 20)
+        depth = random.uniform(1, 20)
+        x = random.uniform(x - width/2, x + width/2)
+        y = random.uniform(y - depth/2, y + depth/2)
+        z = z + height/2
+        bpy.ops.mesh.primitive_cube_add(size=1, location=(x, y, z))
+        cube1 = bpy.context.active_object
+        cube1.scale = (width, depth, height)
+    else: # right
+        height = random.uniform(1, 20)
+        width = random.uniform(1, 20)
+        depth = random.uniform(1, 20)
+        x = random.uniform(x - width/2, x + width/2)
+        y = random.uniform(y - depth/2, y + depth/2)
+        z = z - height/2
+        bpy.ops.mesh.primitive_cube_add(size=1, location=(x, y, z))
+        cube1 = bpy.context.active_object
+        cube1.scale = (width, depth, height)
